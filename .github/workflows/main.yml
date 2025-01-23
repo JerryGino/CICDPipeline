@@ -18,7 +18,9 @@ jobs:
 
       - name: Run basic HTTP test
         run: |
-          curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" http://localhost:8080 || exit 1
+          curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" http://localhost:8080 
+          if[ "$HTTP_STATUS" -ne 200 ]; then echo "Expected HTTP 200 but got $HTTP_STATUS"
+            exit 1
 
   deploy:
     runs-on: ubuntu-latest
