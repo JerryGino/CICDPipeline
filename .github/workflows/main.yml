@@ -16,6 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Start local server (if applicable)
+        run: |
+          # Make sure your local server (e.g., Docker or other) is running before this step
+          # Example for starting a local server
+          docker-compose up -d
+
       - name: Run basic HTTP test
         run: |
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" -H "Pragma: no-cache" -H "If-None-Match: *" -H "If-Modified-Since: 0" http://localhost:8080)
