@@ -18,7 +18,12 @@ jobs:
 
       - name: Run basic HTTP test
         run: |
-          curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" -H "Pragma: no-cache" -H "If-None-Match: *" -H "If-Modified-Since: 0" http://localhost:8080 | grep -q "^200$" || exit 1
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" -H "Pragma: no-cache" -H "If-None-Match: *" -H "If-Modified-Since: 0" http://localhost:8080)
+          if [ "$HTTP_STATUS" -ne 200 ] || [ "$HTTP_STATUS" -ne 304 ]; then
+            echo "Unexpected HTTP status: $HTTP_STATUS"
+            exit 1
+          else
+            echo "HTTP status is $HTTP_STATUS - OK"
 
   deploy:
     runs-on: ubuntu-latest
