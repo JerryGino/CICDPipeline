@@ -31,6 +31,7 @@ jobs:
 
       - name: Run basic HTTP test
         run: |
+          apt-get -y update; apt-get -y install curl
           sleep 30
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" -H "Pragma: no-cache" -H "If-None-Match: *" -H "If-Modified-Since: 0" http://docker:8080)
           if [ "$HTTP_STATUS" -ne 200 ] || [ "$HTTP_STATUS" -ne 304 ]; then
