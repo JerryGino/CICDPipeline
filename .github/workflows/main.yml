@@ -21,6 +21,7 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version  # Check that docker-compose was installed
+          echo "docker compose installed successfully"
 
       - name: Start local server (if applicable)
         run: |
@@ -30,7 +31,8 @@ jobs:
 
       - name: Run basic HTTP test
         run: |
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" -H "Pragma: no-cache" -H "If-None-Match: *" -H "If-Modified-Since: 0" http://localhost:8080)
+          sleep 30
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Cache-control: no-cache" -H "Pragma: no-cache" -H "If-None-Match: *" -H "If-Modified-Since: 0" http://docker:8080)
           if [ "$HTTP_STATUS" -ne 200 ] || [ "$HTTP_STATUS" -ne 304 ]; then
             echo "Unexpected HTTP status: $HTTP_STATUS"
             exit 1
